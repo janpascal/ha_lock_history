@@ -1,0 +1,12 @@
+lock_manager:
+  zwave_node_id: 3
+  ozw_log: /var/lib/homeassistant/OZW_Log.txt
+  tags:
+    - name: Tom
+      user_code: !secret user_code_tom
+    - name: Alice
+      user_code: !secret user_code_alice
+    - name: Bob
+      user_code: !secret user_code_bob
+    - name: Kreacher
+      user_code: !secret user_code_kreacher

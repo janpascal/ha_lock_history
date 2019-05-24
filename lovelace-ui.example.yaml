@@ -1,0 +1,9 @@
+resources:
+  - url: /local/lock_manager.js
+    type: module
+views:
+  - title: Home
+    cards:
+      - type: 'custom:user-code'
+    path: default_view
+    badges: []
