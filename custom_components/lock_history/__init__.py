@@ -167,11 +167,10 @@ class LockHistory:
     async def async_initialize(self):
         """Get the usercode data."""
 
-        raw_storage = await self.store.async_load()
-
         try:
+            raw_storage = await self.store.async_load()
             self._history = raw_storage["history"]
-        except KeyError:
+        except:
             self._history = []
 
         async def zwave_ready(event):
