@@ -5,6 +5,6 @@
     "requirements": [],
     "dependencies": [],
     "codeowners": ["@janpascal"],
-	"version": "1.0.0",
+    "version": "1.0.0",
     "homeassistant": "0.96.0"
 }
