@@ -1,0 +1,14 @@
+{
+  "domain": "lock_manager",
+  "version": "0.1.0",
+  "name": "Lock Manager",
+  "documentation": "https://github.com/janpascal/lock_manager",
+  "issue_tracker": "https://github.com/janpascal/lock_manager/issues",
+  "dependencies": ["mqtt", "zwave_js"],
+  "config_flow": true,
+  "codeowners": [
+    "@janpascal"
+  ],
+  "requirements": [
+  ]
+}
