@@ -1,5 +1,5 @@
 resources:
-  - url: /local/lock_manager.js
+  - url: /local/usercode.js
     type: module
 views:
   - title: Home

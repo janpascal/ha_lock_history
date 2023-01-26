@@ -98,11 +98,11 @@ class LockHistory extends LitElement {
       this._fetchData();
     }
 
-    this.hass.connection.addEventListener("lock_history.history_updated", history_event_fired);
+    this.hass.connection.addEventListener("lock_manager.history_updated", history_event_fired);
   }
 
   async _fetchData() {
-    const data = await this.hass.callWS({ type: "lock_history/history" });
+    const data = await this.hass.callWS({ type: "usercode/history" });
     this._historyItems = data.history;
   }
 
