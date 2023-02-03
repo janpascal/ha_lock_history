@@ -120,6 +120,23 @@ class LockHistory:
         self._async_schedule_save()
 
 
+    async def alarm_trigger_handler(self, entity, old_state, new_state):
+        _LOGGER.info(f"Alarm trigger event: {entity}")
+
+        _LOGGER.info("Adding to history: alarm triggered event")
+        self._history.append({
+            "tagno": -1,
+            "name": "Alarm!",
+            "user_code": "",
+            "state": "Triggered",
+            "date": dt_util.now().strftime("%d/%m/%Y %H:%M:%S"),
+            "timestamp": dt_util.as_timestamp(dt_util.now()),
+        })
+
+        _LOGGER.debug("Current history: {}".format(self._history))
+        self.hass.bus.fire(HISTORY_UPDATED_EVENT, {})
+        self._async_schedule_save()
+
     async def async_initialize(self):
         """Get the usercode data."""
 
@@ -131,6 +148,7 @@ class LockHistory:
             self._history = []
 
         cancel = self.hass.bus.async_listen('zwave_js_notification', self.zwave_notification_handler)
+        homeassistant.helpers.event.async_track_state_change(self.hass, "alarm_control_panel.home_alarm", self.alarm_trigger_handler, to_state="triggered")
 
         _LOGGER.info("async_initialize finished")
 

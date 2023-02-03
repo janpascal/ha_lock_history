@@ -51,6 +51,17 @@ class LockHistory extends LitElement {
     `;
   }
 
+  state_icon(state) {
+      switch (state) {
+          case "Home":
+                return "mdi:home";
+          case "Triggered":
+                return "mdi:alarm";
+          default:
+                return "mdi:lock";
+      }
+  }
+
   render() {
     if (
       !this.hass ||
@@ -68,7 +79,7 @@ class LockHistory extends LitElement {
               return html`
                 <paper-icon-item .entry=${entry}>
                   <ha-icon 
-                      icon=${entry.state == "Home" ? "mdi:home" : "mdi:lock"} 
+                      icon=${this.state_icon(entry.state)}
                       slot="item-icon">
                   </ha-icon>
                   <paper-item-body two-line>
