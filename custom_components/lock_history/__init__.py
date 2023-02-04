@@ -40,6 +40,7 @@ CONF_USER_CODE = 'user_code'
 CONF_TAGS = 'tags'
 CONF_INDEX = 'index'
 CONF_ZWAVE_NODE_ID = 'zwave_node_id'
+CONF_ALARM_PANEL = 'alarm_panel'
 
 ATTR_EDITABLE = 'editable'
 ATTR_NAME = 'name'
@@ -49,6 +50,7 @@ USER_CODE_SCHEMA = vol.All(cv.string, cv.matches_regex(r'[0-9a-fA-F][0-9a-fA-F](
 CONFIG_SCHEMA = vol.Schema({
     DOMAIN: vol.Schema({
         vol.Required(CONF_ZWAVE_NODE_ID): cv.positive_int,
+        vol.Required(CONF_ALARM_PANEL): cv.entity_id,
         vol.Required(CONF_TAGS): vol.Schema([ 
             vol.Schema({
                 vol.Required(CONF_NAME): cv.string,
@@ -63,11 +65,12 @@ class LockHistory:
     """Manage lock history."""
 
     def __init__(self, hass: HomeAssistantType, component: EntityComponent,
-                 lock_node_id, config_tags):
+                 lock_node_id, alarm_entity_id, config_tags):
         """Initialize lock history storage."""
         self.hass = hass
         self.component = component
         self.node_id = lock_node_id
+        self.alarm_entity_id = alarm_entity_id
         self.config_tags = config_tags
         self.store = Store(hass, STORAGE_VERSION, STORAGE_KEY)
         _LOGGER.info(f"self.config_tags: {self.config_tags}")
@@ -148,7 +151,8 @@ class LockHistory:
             self._history = []
 
         cancel = self.hass.bus.async_listen('zwave_js_notification', self.zwave_notification_handler)
-        homeassistant.helpers.event.async_track_state_change(self.hass, "alarm_control_panel.home_alarm", self.alarm_trigger_handler, to_state="triggered")
+        homeassistant.helpers.event.async_track_state_change(self.hass,
+            self.alarm_entity_id, self.alarm_trigger_handler, to_state="triggered")
 
         _LOGGER.info("async_initialize finished")
 
@@ -176,8 +180,11 @@ async def async_setup(hass, config):
     lock_node_id = conf[CONF_ZWAVE_NODE_ID]
     _LOGGER.info("lock_node_id: {}".format(lock_node_id))
 
+    alarm_entity = conf[CONF_ALARM_PANEL]
+    _LOGGER.info("Alarm control panel entity: {}".format(alarm_entity))
+
     component = EntityComponent(_LOGGER, DOMAIN, hass)
-    manager = hass.data[DOMAIN] = LockHistory(hass, component, lock_node_id, tags)
+    manager = hass.data[DOMAIN] = LockHistory(hass, component, lock_node_id, alarm_entity, tags)
     await manager.async_initialize()
 
     # Register websocket APIs
