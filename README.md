@@ -6,7 +6,9 @@ Up to now, this component has only been tested with a Zipato Mini RFiD Keypad.
 
 This component has been updated to work with the zwave-js integration
 
-Exaìple config in `configuration.yml`:
+![Screenshot](screenshot.png) 
+
+Example config in `configuration.yml`:
 
 ```yml
 lock_manager:
