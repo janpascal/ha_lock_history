@@ -1,0 +1,10 @@
+{
+    "domain": "ha_lock_history",
+    "name": "Home Assistant Lock History",
+    "documentation": "https://github.com/janpascal/ha_lock_history",
+    "requirements": [],
+    "dependencies": [],
+    "codeowners": ["@janpascal"],
+    "version": "1.0.0",
+    "homeassistant": "0.96.0"
+}
